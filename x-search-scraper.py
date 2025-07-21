@@ -9,14 +9,19 @@ async def main():
 
     # User Inputs
     keywords = input("Enter the keywords you want to search for: ")
+    user = input("Enter user you want to search for (or leave blank): ")
     since_date = input("Enter your query start date (YYYY-MM-DD): ")
     until_date = input("Enter your query end date (YYYY-MM-DD): ")
 
     query_parts = [keywords.strip()]
+    if user.strip():
+            query_parts.append(f"from:{user.strip()}")
     if since_date.strip():
             query_parts.append(f"since:{since_date.strip()}")
     if until_date.strip():
             query_parts.append(f"until:{until_date.strip()}")        
+
+    query_parts.append("-grok")
 
     query = " ".join(query_parts)
 
