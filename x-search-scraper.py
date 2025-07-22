@@ -21,7 +21,7 @@ async def main():
     if until_date.strip():
             query_parts.append(f"until:{until_date.strip()}")        
 
-    query_parts.append("-grok")
+    query_parts.append("-grok") #filters grok AI prompts for a more efficient dataset
 
     query = " ".join(query_parts)
 
