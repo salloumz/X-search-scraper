@@ -2,3 +2,5 @@ scraped_tweets.json
 scraped_tweets.csv
 accounts.txt
 accounts.db
+*.csv
+*.json
