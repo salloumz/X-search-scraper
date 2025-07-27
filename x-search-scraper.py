@@ -1,11 +1,25 @@
+import subprocess
+import sys
+
+required_packages = ['twscrape', 'pandas', 'asyncio']
+
+for package in required_packages:
+    try:
+        __import__(package)
+    except ImportError:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+
 import asyncio
-from twscrape import API, gather
+from twscrape import API, gather, Account
 from twscrape.logger import set_log_level
 import pandas as pd
 
 L = 500
 
 async def main():
+
+    api = API()
 
     # User Inputs
     keywords = input("Enter the keywords you want to search for: ")
@@ -24,16 +38,20 @@ async def main():
     query_parts.append("-grok") #filters grok AI prompts for a more efficient dataset
 
     query = " ".join(query_parts)
-
-    api = API()
+ 
     tweets = []
     q = query
     async for tweet in api.search(q, limit = L):
         tweets.append([tweet.date, tweet.user.username, tweet.rawContent])
-        
+
+    print(f"Collected {len(tweets)} tweets.")    
+    
+    filename = f"{keywords}_{since_date}_{until_date}".strip()
     df = pd.DataFrame(tweets, columns=['Date', 'User', 'Tweet'])
-    df.to_csv('scraped_tweets.csv', index=False, encoding='utf-8')
-    df.to_json('scraped_tweets.json', orient='records', lines=True)
+    df.to_csv(f"{filename}.csv", index=False, encoding='utf-8')
+    df.to_json(f"{filename}.json", orient='records', lines=True)
+
+    print(f"EXPORTED TO {filename}.csv AND {filename}.json")
 
 if __name__ == "__main__":
     asyncio.run(main())
