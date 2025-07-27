@@ -11,7 +11,7 @@ for package in required_packages:
 
 
 import asyncio
-from twscrape import API, gather, Account
+from twscrape import API, gather
 from twscrape.logger import set_log_level
 import pandas as pd
 
@@ -21,7 +21,6 @@ async def main():
 
     api = API()
 
-    # User Inputs
     keywords = input("Enter the keywords you want to search for: ")
     user = input("Enter user you want to search for (or leave blank): ")
     since_date = input("Enter your query start date (YYYY-MM-DD): ")
